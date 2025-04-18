@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import DocumentEditor from "@/components/DocumentEditor";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +32,7 @@ const App = () => (
             path="/document/:id"
             element={
               <AuthGuard>
-                <div>Document Editor (Not implemented yet)</div>
+                <DocumentEditor />
               </AuthGuard>
             }
           />
