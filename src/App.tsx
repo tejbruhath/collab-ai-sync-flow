@@ -8,6 +8,7 @@ import { AuthGuard } from "@/components/AuthGuard";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,7 @@ const App = () => (
             path="/"
             element={
               <AuthGuard>
-                <Index />
+                <Dashboard />
               </AuthGuard>
             }
           />
