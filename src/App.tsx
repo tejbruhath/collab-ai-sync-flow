@@ -28,6 +28,14 @@ const App = () => (
               </AuthGuard>
             }
           />
+          <Route
+            path="/document/:id"
+            element={
+              <AuthGuard>
+                <div>Document Editor (Not implemented yet)</div>
+              </AuthGuard>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

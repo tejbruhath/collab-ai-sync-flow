@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 interface CreateDocumentDialogProps {
   open: boolean;
@@ -17,6 +18,7 @@ const CreateDocumentDialog = ({ open, onOpenChange }: CreateDocumentDialogProps)
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleCreate = async () => {
     if (!title.trim()) {
@@ -28,11 +30,24 @@ const CreateDocumentDialog = ({ open, onOpenChange }: CreateDocumentDialogProps)
       return;
     }
 
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to create a document",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const { data, error } = await supabase
         .from('documents')
-        .insert([{ title, content: "" }])
+        .insert({
+          title: title,
+          content: "",
+          created_by: user.id
+        })
         .select()
         .single();
 
@@ -46,6 +61,7 @@ const CreateDocumentDialog = ({ open, onOpenChange }: CreateDocumentDialogProps)
       onOpenChange(false);
       navigate(`/document/${data.id}`);
     } catch (error: any) {
+      console.error("Error creating document:", error);
       toast({
         title: "Error",
         description: error.message,
